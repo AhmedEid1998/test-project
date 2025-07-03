@@ -2,11 +2,16 @@ import { Component, Type } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CustomLayoutComponent } from 'grid-layout-lib';
 import { GridOneComponent } from './grid-one/grid-one.component';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { CounterState } from './state/counter.state';
+import { AsyncPipe } from '@angular/common';
+import { Increment } from './state/counter.action';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CustomLayoutComponent],
+  imports: [RouterOutlet, CustomLayoutComponent, AsyncPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -49,4 +54,18 @@ export class AppComponent {
   };
   disableDrag: boolean = false; // Flag to disable dragging of items
   disableResize: boolean = false; // Flag to disable resizing of items
+
+
+
+
+  count$: Observable<number> = this.store.select(CounterState.getCount);
+  constructor(private store: Store) {
+    store.select(CounterState.getCount).subscribe(data => {
+      console.log('data', data);
+    })
+  }
+
+  increment() {
+    this.store.dispatch(new Increment());
+  }
 }

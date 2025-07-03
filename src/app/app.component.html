@@ -12,4 +12,9 @@
     [backgroundConfig]="backgroundConfig"
   ></app-custom-layout>
 </div>
+
+<div>
+  <h1>Count: {{ count$ | async }}</h1>
+  <button (click)="increment()">Increment</button>
+</div>
 <router-outlet />
